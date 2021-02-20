@@ -51,3 +51,5 @@ spec:
               value: root
             - name: DB_PASSWORD
               value: password
+      imagePullSecrets:
+        - name: regcred
