@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wdyw-app-svc
+spec:
+  selector:
+    app: wdyw-app-pod
+  type: LoadBalancer
+  ports:
+    - name: client
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+    - name: server
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wdyw-app
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: wdyw-app-pod
+  template:
+    metadata:
+      labels:
+        app: wdyw-app-pod
+    spec:
+      containers:
+        - name: client
+          image: kanghun8871/wdyw:client
+          ports:
+            - containerPort: 3000
+          imagePullPolicy: Always
+        - name: server
+          image: kanghun8871/wdyw:server
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+          env:
+            - name: DB_HOST
+              value: mysql
+            - name: DB_NAME
+              value: wdyw
+            - name: DB_USER
+              value: root
+            - name: DB_PASSWORD
+              value: password
