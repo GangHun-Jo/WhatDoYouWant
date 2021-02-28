@@ -1,11 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: wdyw-app-svc
+  name: wdyw-svc-{{ .Release.Name }}
 spec:
   selector:
-    app: wdyw-app-pod
-  type: LoadBalancer
+    app: wdyw-app-{{ .Release.Name }}
   ports:
     - name: client
       protocol: TCP
@@ -19,17 +18,17 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wdyw-app
+  name: wdyw-app-{{ .Release.Name }}
 spec:
   replicas: 1
   revisionHistoryLimit: 0
   selector:
     matchLabels:
-      app: wdyw-app-pod
+      app: wdyw-app-{{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: wdyw-app-pod
+        app: wdyw-app-{{ .Release.Name }}
     spec:
       containers:
         - name: client
@@ -44,12 +43,12 @@ spec:
           imagePullPolicy: Always
           env:
             - name: DB_HOST
-              value: mysql
+              value: mysql-svc-{{ .Release.Name }}
             - name: DB_NAME
-              value: wdyw
+              value: {{ .Values.mysql.db }}
             - name: DB_USER
-              value: root
+              value: {{ .Values.mysql.user }}
             - name: DB_PASSWORD
-              value: password
+              value: {{ .Values.mysql.password }}
       imagePullSecrets:
         - name: regcred

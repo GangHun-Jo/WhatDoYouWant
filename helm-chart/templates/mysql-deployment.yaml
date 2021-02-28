@@ -1,36 +1,36 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: mysql-svc-{{ .Release.Name }}
 spec:
   ports:
     - port: 3306
   selector:
-    app: mysql
+    app: mysql-{{ .Release.Name }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql
+  name: mysql-{{ .Release.Name }}
 spec:
   selector:
     matchLabels:
-      app: mysql
+      app: mysql-{{ .Release.Name }}
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: mysql
+        app: mysql-{{ .Release.Name }}
     spec:
       containers:
         - image: mysql:5.6
           name: mysql
           env:
             - name: MYSQL_DATABASE
-              value: wdyw
+              value: {{ .Values.mysql.db }}
             - name: MYSQL_ROOT_PASSWORD
-              value: password
+              value: {{ .Values.mysql.password }}
           ports:
             - containerPort: 3306
               name: mysql
