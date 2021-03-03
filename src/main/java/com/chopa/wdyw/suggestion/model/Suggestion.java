@@ -32,4 +32,10 @@ public class Suggestion {
 	private String title;
 
 	private String content;
+
+	public void update(Suggestion newOne) {
+		this.title = newOne.getTitle();
+		this.content = newOne.getContent();
+		this.categoryList = newOne.getCategoryList();
+	}
 }
