@@ -2,6 +2,9 @@ package com.chopa.wdyw.suggestion.dto;
 
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+
 import com.chopa.wdyw.category.dto.CategoryDTO;
 
 import lombok.Data;
@@ -18,8 +21,11 @@ public class SuggestionDTO {
 	@Data
 	public static class Request {
 		private Long id;
-		private List<CategoryDTO> categoryList;
+		@NotEmpty
+		private List<@Valid CategoryDTO> categoryList;
+		@NotEmpty
 		private String title;
+		@NotEmpty
 		private String content;
 	}
 }

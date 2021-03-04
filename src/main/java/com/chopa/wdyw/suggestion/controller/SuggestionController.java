@@ -3,6 +3,8 @@ package com.chopa.wdyw.suggestion.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,13 +41,13 @@ public class SuggestionController {
 	}
 
 	@PostMapping("/suggestions")
-	public SuggestionDTO.Response create(@RequestBody SuggestionDTO.Request dto) {
+	public SuggestionDTO.Response create(@RequestBody @Valid SuggestionDTO.Request dto) {
 		Suggestion newSuggestion = modelMapper.map(dto, Suggestion.class);
 		return modelMapper.map(suggestionService.create(newSuggestion), SuggestionDTO.Response.class);
 	}
 
 	@PutMapping("/suggestions/{id}")
-	public SuggestionDTO.Response update(@PathVariable Long id, @RequestBody SuggestionDTO.Request dto) {
+	public SuggestionDTO.Response update(@PathVariable Long id, @RequestBody @Valid SuggestionDTO.Request dto) {
 		if (!dto.getId().equals(id)) {
 			throw new IllegalArgumentException("id가 맞지 않습니다.");
 		}
