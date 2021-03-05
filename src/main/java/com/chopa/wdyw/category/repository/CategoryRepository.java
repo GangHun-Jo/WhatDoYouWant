@@ -1,4 +1,4 @@
-package com.chopa.wdyw.category;
+package com.chopa.wdyw.category.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
