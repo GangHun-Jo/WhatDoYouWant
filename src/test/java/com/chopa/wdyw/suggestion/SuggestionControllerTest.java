@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.chopa.wdyw.category.dto.CategoryDTO;
 import com.chopa.wdyw.suggestion.dto.SuggestionDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -35,7 +34,8 @@ public class SuggestionControllerTest {
 
 	@BeforeEach
 	public void init() {
-		CategoryDTO category = new CategoryDTO();
+		SuggestionDTO.CategoryDTO category = new SuggestionDTO.CategoryDTO();
+		category.setId(1L);
 		category.setName("카테고리");
 
 		newSuggestion = new SuggestionDTO.Request();
@@ -59,10 +59,10 @@ public class SuggestionControllerTest {
 	}
 
 	@Test
-	public void testEmptyCategoryName() throws Exception {
+	public void testEmptyCategoryId() throws Exception {
 		// when
 		if (newSuggestion.getCategoryList().size() > 0) {
-			newSuggestion.getCategoryList().get(0).setName("");
+			newSuggestion.getCategoryList().get(0).setId(null);
 		}
 
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/suggestions")

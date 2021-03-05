@@ -1,5 +1,6 @@
-package com.chopa.wdyw.suggestion;
+package com.chopa.wdyw.category;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.persistence.EntityManager;
@@ -14,22 +15,22 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.chopa.wdyw.category.repository.CategoryRepository;
 import com.chopa.wdyw.category.model.Category;
+import com.chopa.wdyw.category.repository.CategoryRepository;
 import com.chopa.wdyw.suggestion.model.Suggestion;
 import com.chopa.wdyw.suggestion.repository.SuggestionRepository;
 
-@ExtendWith(SpringExtension.class)
 @DataJpaTest
+@ExtendWith(SpringExtension.class)
 @ActiveProfiles("local")
 @TestPropertySource(properties = "spring.jpa.database-platform=org.hibernate.dialect.H2Dialect")
-public class SuggestionRepositoryTest {
-
-	@Autowired
-	private SuggestionRepository suggestionRepository;
+public class CategoryRepositoryTest {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private SuggestionRepository suggestionRepository;
 
 	@Autowired
 	private EntityManager entityManager;
@@ -51,8 +52,14 @@ public class SuggestionRepositoryTest {
 	}
 
 	@Test
-	void getOneTest() {
-		Suggestion suggestion = suggestionRepository.getOne(1L);
-		Assertions.assertEquals(1, suggestion.getCategoryList().size());
+	public void deleteCategoryTest() {
+		Category category = categoryRepository.getOne(1L);
+		category.getSuggestionList().forEach(suggestion -> suggestion.getCategoryList().remove(category));
+		category.setSuggestionList(new ArrayList<>());
+
+		entityManager.flush();
+		entityManager.clear();
+
+		Assertions.assertEquals(0, suggestionRepository.getOne(1L).getCategoryList().size());
 	}
 }
