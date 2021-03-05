@@ -1,5 +1,6 @@
 package com.chopa.wdyw.category.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
@@ -42,6 +43,10 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public void deleteById(Long id) {
+		Category category = categoryRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+		category.getSuggestionList().forEach(suggestion -> suggestion.getCategoryList().remove(category));
+		category.setSuggestionList(new ArrayList<>());
+
 		categoryRepository.deleteById(id);
 	}
 }

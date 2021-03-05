@@ -3,9 +3,9 @@ package com.chopa.wdyw.suggestion.dto;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-
-import com.chopa.wdyw.category.dto.CategoryDTO;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
@@ -27,5 +27,13 @@ public class SuggestionDTO {
 		private String title;
 		@NotEmpty
 		private String content;
+	}
+
+	@Data
+	public static class CategoryDTO {
+		@Min(1)
+		@NotNull
+		private Long id;
+		private String name;
 	}
 }
