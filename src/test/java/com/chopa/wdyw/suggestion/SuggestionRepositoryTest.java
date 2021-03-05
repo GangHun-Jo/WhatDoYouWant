@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.chopa.wdyw.category.CategoryRepository;
+import com.chopa.wdyw.category.repository.CategoryRepository;
 import com.chopa.wdyw.category.model.Category;
 import com.chopa.wdyw.suggestion.model.Suggestion;
 import com.chopa.wdyw.suggestion.repository.SuggestionRepository;

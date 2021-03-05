@@ -13,4 +13,8 @@ public class Category {
 	@GeneratedValue
 	private Long id;
 	private String name;
+
+	public void update(Category newCategory) {
+		this.name = newCategory.getName();
+	}
 }
