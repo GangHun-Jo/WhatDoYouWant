@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,5 +61,11 @@ public class SuggestionController {
 	@DeleteMapping("/suggestions/{id}")
 	public void delete(@PathVariable Long id) {
 		suggestionService.deleteById(id);
+	}
+
+	@PostMapping("/suggestions/{id}/like")
+	public ResponseEntity<?> likeSuggestion(@PathVariable Long id) {
+		suggestionService.likeSuggestion(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

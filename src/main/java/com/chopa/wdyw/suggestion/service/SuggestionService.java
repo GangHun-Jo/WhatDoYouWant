@@ -14,4 +14,6 @@ public interface SuggestionService {
 	Suggestion update(Suggestion newSuggestion);
 
 	void deleteById(Long id);
+
+	void likeSuggestion(Long id);
 }
