@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.chopa.wdyw.suggestion.model.Suggestion;
+import com.chopa.wdyw.suggestion.repository.SuggestionRankRepositoryImpl;
 import com.chopa.wdyw.suggestion.repository.SuggestionRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class SuggestionServiceImpl implements SuggestionService {
 
 	private final SuggestionRepository suggestionRepository;
+	private final SuggestionRankRepositoryImpl rankRepository;
 
 	@Override
 	public List<Suggestion> findAll() {
@@ -31,7 +33,9 @@ public class SuggestionServiceImpl implements SuggestionService {
 
 	@Override
 	public Suggestion create(Suggestion suggestion) {
-		return suggestionRepository.save(suggestion);
+		Suggestion newSuggestion = suggestionRepository.save(suggestion);
+		rankRepository.add(suggestion.getId());
+		return newSuggestion;
 	}
 
 	@Override
@@ -44,5 +48,18 @@ public class SuggestionServiceImpl implements SuggestionService {
 	@Override
 	public void deleteById(Long id) {
 		suggestionRepository.deleteById(id);
+	}
+
+	@Override
+	public void likeSuggestion(Long id) {
+		if (!suggestionRepository.existsById(id)) {
+			throw new IllegalArgumentException("id에 해당하는 suggestion이 존재하지 않습니다");
+		}
+		rankRepository.increment(id);
+	}
+
+	@Override
+	public List<Suggestion> findMostLikedList(long count) {
+		return suggestionRepository.findAllById(rankRepository.getMostLikedIdSet(count));
 	}
 }
