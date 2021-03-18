@@ -57,4 +57,9 @@ public class SuggestionServiceImpl implements SuggestionService {
 		}
 		rankRepository.increment(id);
 	}
+
+	@Override
+	public List<Suggestion> findMostLikedList(long count) {
+		return suggestionRepository.findAllById(rankRepository.getMostLikedIdSet(count));
+	}
 }

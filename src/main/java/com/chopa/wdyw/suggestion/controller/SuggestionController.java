@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chopa.wdyw.suggestion.dto.SuggestionDTO;
@@ -67,5 +68,12 @@ public class SuggestionController {
 	public ResponseEntity<?> likeSuggestion(@PathVariable Long id) {
 		suggestionService.likeSuggestion(id);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping("/suggestions/rank")
+	public List<SuggestionDTO.Response> findSuggestionRank(@RequestParam Long count) {
+		return suggestionService.findMostLikedList(count).stream()
+			.map((suggestion -> modelMapper.map(suggestion, SuggestionDTO.Response.class)))
+			.collect(Collectors.toList());
 	}
 }

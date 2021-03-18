@@ -16,4 +16,6 @@ public interface SuggestionService {
 	void deleteById(Long id);
 
 	void likeSuggestion(Long id);
+
+	List<Suggestion> findMostLikedList(long count);
 }
